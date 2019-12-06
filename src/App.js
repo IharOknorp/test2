@@ -9,7 +9,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import {hash, charactersHerous} from './constans/marvel'
+import {hash, charactersHerous} from './constants/marvel'
 import {bool, array, func} from "prop-types";
 
 const useStyles = makeStyles({

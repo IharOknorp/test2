@@ -4,7 +4,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
-import { hash } from '../constans/marvel'
+import { hash } from '../constants/marvel'
 import {connect} from "react-redux";
 import {object, func } from "prop-types";
 

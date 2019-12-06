@@ -1,5 +1,5 @@
 import React from 'react';
-import {charactersHerous, hash} from "./constans/marvel";
+import {charactersHerous, hash} from "./constants/marvel";
 const fetchItems = () => {
   return fetch(charactersHerous + hash)
     .then(res => res.json())
