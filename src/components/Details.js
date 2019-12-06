@@ -5,6 +5,8 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import { hash } from '../constans/marvel'
+import {connect} from "react-redux";
+import {object, func } from "prop-types";
 
 const useStyles = makeStyles({
   card: {
@@ -23,14 +25,13 @@ const useStyles = makeStyles({
   },
 });
 
-const Details = (props) => {
-  const {item, onClickDetails} = props;
+const Details = ({item, showCharacterInDetail}) => {
   const classes = useStyles();
 
   const onClick = () =>{
-    onClickDetails();
+    showCharacterInDetail(false);
   };
-  
+
   return(
     <Card className={classes.card} onClick={onClick}>
       <CardContent>
@@ -38,9 +39,10 @@ const Details = (props) => {
           {item.name}
         </Typography>
         <img
+          alt=''
           width="50"
           height="50"
-          src={`${item.thumbnail.path}` + `.${item.thumbnail.extension}` + hash}
+          src={`${item.thumbnail.path}.${item.thumbnail.extension}` + hash}
         />
         <Typography className={classes.pos} color="textSecondary">
           {item.description}
@@ -53,5 +55,16 @@ const Details = (props) => {
   )
 };
 
+Details.propTypes = {
+  item: object,
+  showCharacterInDetail: func,
+};
 
-export default Details;
+const mapDispatchToProps = (dispatch) => ({
+  showCharacterInDetail: (bool) => dispatch({type: 'SHOW_CHARACTER_IN_DETAIL', payload: bool}),
+});
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(Details);

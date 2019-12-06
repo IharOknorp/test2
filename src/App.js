@@ -10,6 +10,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import {hash, charactersHerous} from './constans/marvel'
+import {bool, array, func} from "prop-types";
 
 const useStyles = makeStyles({
   root: {
@@ -21,9 +22,8 @@ const useStyles = makeStyles({
   },
 });
 
-const App = ({characters, fetchCharacters}) => {
+const App = ({characters, fetchCharacters, details, showCharacterInDetail}) => {
   const classes = useStyles();
-  const [showDetail, setShowDetails] = useState(false);
   const [idDetails, setIdDetails] = useState('');
 
   useEffect(() => {
@@ -37,17 +37,14 @@ const App = ({characters, fetchCharacters}) => {
   }, [fetchCharacters]);
 
   const onClickRow = (id) => {
-    if (id) {
-      setIdDetails(id)
-      setShowDetails(true)
-    } else {
-      setShowDetails(false)
-    }
-  }
+    setIdDetails(id);
+    showCharacterInDetail(true);
+  };
 
   return (
     <div>
-      {showDetail ? (<Details item={characters  && characters.find((item) => item.id === idDetails)} onClickDetails={onClickRow}/>) :
+      {details ? (
+          <Details item={characters && characters.find((item) => item.id === idDetails)} onClickDetails={onClickRow}/>) :
         <Paper className={classes.root}>
           <Table className={classes.table} aria-label="simple table">
             <TableHead>
@@ -61,15 +58,17 @@ const App = ({characters, fetchCharacters}) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              { characters  && characters.map(row => (
+              {characters && characters.map(row => (
                 <TableRow key={row.id} onClick={onClickRow.bind(this, row.id)}>
                   <TableCell component="th" scope="row">
                     {row.name}
                   </TableCell>
-                  <TableCell align="right"><img
-                    width="50"
-                    height="50"
-                    src={`${row.thumbnail.path}` + `.${row.thumbnail.extension}` + hash}/>
+                  <TableCell align="right">
+                    <img
+                      alt=''
+                      width="50"
+                      height="50"
+                      src={`${row.thumbnail.path}.${row.thumbnail.extension}` + hash}/>
                   </TableCell>
                   <TableCell align="right">{`${(!!row.comics.items.length)}`}</TableCell>
                   <TableCell align="right">{`${(!!row.series.items.length)}`}</TableCell>
@@ -84,10 +83,19 @@ const App = ({characters, fetchCharacters}) => {
     </div>
   );
 };
-const mapStateToProps = ({characters}) => ({characters});
+
+App.propTypes = {
+  characters:array,
+  fetchCharacters: func,
+  details: bool,
+  showCharacterInDetail: func,
+};
+
+const mapStateToProps = ({characters, details}) => ({characters, details});
 
 const mapDispatchToProps = (dispatch) => ({
   fetchCharacters: (arr) => dispatch({type: 'FETCH_CHARACTERS', payload: arr}),
+  showCharacterInDetail: (bool) => dispatch({type: 'SHOW_CHARACTER_IN_DETAIL', payload: bool}),
 });
 
 
